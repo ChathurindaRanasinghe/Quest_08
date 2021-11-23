@@ -402,38 +402,79 @@ public class Calculator implements ActionListener {
         };
     }
 
-//    public char[] plusMinus(String tokens){
-//        tokens = tokens.replace("++","+");
-//        tokens = tokens.replace("+-","-");
-//        tokens = tokens.replace("-+","-");
-//        tokens = tokens.replace("--","+");
-//
-//        //char[] arr = tokens.toCharArray();
-//        StringBuilder str = new StringBuilder(tokens);
-//        if(tokens.charAt(0)=='+'){
-//            str.deleteCharAt(0);
-//        }else if(tokens.charAt(0)=='-'){
-//            int end = -1;
-//           for(int i=1;i<tokens.length();i++){
-//               if(!(Character.isDigit(tokens.charAt(i)) || tokens.charAt(i)=='.')){
-//                   end = i-1;
-//               }
-//           }
-//        }
-//
-//
-//    }
+    public static char[] plusMinus(String tokens){
+        tokens = tokens.replace("++","+");
+        tokens = tokens.replace("+-","-");
+        tokens = tokens.replace("-+","-");
+        tokens = tokens.replace("--","+");
+        int end = -1;
+        //char[] arr = tokens.toCharArray();
+        StringBuilder str = new StringBuilder(tokens);
+        if(tokens.charAt(0)=='+'){
+            str.deleteCharAt(0);
+        }else if(tokens.charAt(0)=='-'){
+
+            for(int i=1;i<tokens.length();i++){
+                if(!Character.isDigit(tokens.charAt(i))){
+                    if(tokens.charAt(i)!= '.'){
+                        end = i;
+                        break;
+                    }
+
+                }
+
+            }
+            str.insert(end,')');
+            str.insert(0,'(');
+            str.insert(1,'0');
+
+        }
+        //TODO: 6.- check
+        boolean flag = true;
+        while(flag){
+            for(int i=1;i<str.length();i++){
+                if(str.charAt(i)=='-' && !Character.isDigit(str.charAt(i-1)) && str.charAt(i-1) != ')' ){
+                    str.insert(i,'(');
+                    str.insert(i+1,'0');
+                    //System.out.println(str);
+                    //System.out.println(str.charAt(i+3));
+                    for(int j=i+3;j<str.length();j++){
+                        if(!Character.isDigit(str.charAt(j)) || j == str.length()-1){
+                            if(str.charAt(j)!= '.'){
+                                end = j;
+                                if(j==str.length()-1) end++;
+                                break;
+                            }
+                        }
+
+                    }
+                    str.insert(end,')');
+                    break;
+                }
+                if(i==str.length()-1){
+                    flag = false;
+                }
+            }
+        }
+
+
+        return str.toString().toCharArray();
+
+
+    }
 
     public static double evaluate(String tokens) {
         int i;
-        char[] token = tokens.toCharArray();
+
+        char[] token = plusMinus(tokens);
         // stack to store integer values.
         Stack<Double> values = new Stack<>();
 
         // stack to store operators.
         Stack<Character> ops = new Stack<>();
+        ops.push('(');
 
-        for (i = 0; i < tokens.length(); i++) {
+        for (i = 0; i < token.length; i++) {
 
             // Current token is a whitespace,
             // skip it.
@@ -454,7 +495,7 @@ public class Calculator implements ActionListener {
 
                 // There may be more than one
                 // digits in number.
-                while (i < tokens.length() &&
+                while (i < token.length &&
                         (Character.isDigit(token[i]) || token[i] == '.')) {
                     if (Character.isDigit(token[i]))
                         val = val + String.valueOf((token[i] - '0'));
@@ -507,7 +548,7 @@ public class Calculator implements ActionListener {
             }
         }
 
-        while (!ops.empty()) {
+        while (ops.size()>1) {
             double val2 = values.peek();
             values.pop();
 
@@ -589,9 +630,9 @@ public class Calculator implements ActionListener {
                 case "sin" -> value = Math.sin(Math.toRadians(v));
                 case "cos" -> value = Math.cos(Math.toRadians(v));
                 case "tan" -> value = Math.tan(Math.toRadians(v));
-                case "atan" -> value = Math.atan(v);
-                case "acos" -> value = Math.acos(v);
-                case "asin" -> value = Math.asin(v);
+                case "atan" -> value = Math.toDegrees(Math.atan(v));
+                case "acos" -> value = Math.toDegrees(Math.acos(v));
+                case "asin" -> value = Math.toDegrees(Math.asin(v));
                 default -> System.out.println("invalid Trig Function");
             }
 
