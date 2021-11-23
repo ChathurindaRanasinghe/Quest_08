@@ -366,13 +366,17 @@ public class Calculator implements ActionListener {
             String str = textField.getText();
 //            String ans = Double.toString(evaluate(str));
             try{
+//                if(validate(str)){
+//                    String ans = extractTrig(str);
+//                    textField.setText(ans);
+//                }else{
+//                    throw new Exception("Syntax Error");
+//                }
                 String ans = extractTrig(str);
                 textField.setText(ans);
+
             }catch(Exception exception){
-                if(exception.getMessage()!=null)
-                    textField.setText(exception.getMessage());
-                else
-                    textField.setText("Error!");
+                textField.setText("Error!");
             }
 
 
@@ -658,5 +662,51 @@ public class Calculator implements ActionListener {
         return extractTrig(s);
 
     }
+
+//    public boolean isOperator(char op){
+//        return op == '+' || op == '-' || op == '*' || op == '/' || op == '%';
+//    }
+//
+//
+//    public boolean  validate(String s){
+//
+//        char begChar=s.charAt(0);
+//        char endChar=s.charAt(s.length()-2);
+//        if(isOperator(begChar)&&(begChar!='+')&&(begChar!='-')){   //cannot have /,*,% at the beginning
+//
+//            return false;
+//        }
+//        if(isOperator(endChar)||endChar=='.'){   //cannot have /,* at the end
+//
+//            return false;
+//        }
+//
+//        for(int i=0;i<s.length();i++){
+//
+//            char temp=s.charAt(i);
+//
+//            if(i<=s.length()-2 ){
+//
+//                if(isOperator(temp)&&(temp!='+')&&(temp!='-')&&temp==s.charAt(i+1)){
+//                    return false;   //cannot have **,// or %%
+//                }
+//
+//                if(isOperator(temp)&&isOperator((s.charAt(i+1)))){
+//                    if(!((temp=='+' && s.charAt(i+1)=='-' )||(temp=='-'&& s.charAt(i+1)=='+') )) //can only have +- and -+.cant have /*,*/,%* etc
+//                        return false;
+//                }
+//
+//            }
+//            if(i<=s.length()-3 ){
+//
+//                if(isOperator(temp)&&temp==s.charAt(i+1)&&temp==s.charAt(i+2)){
+//                    return false;   //cannot have +++,---,***,/// or %%%
+//                }
+//
+//            }
+//        }
+//
+//        return true;
+//    }
 
 }
