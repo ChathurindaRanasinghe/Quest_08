@@ -369,7 +369,10 @@ public class Calculator implements ActionListener {
                 String ans = extractTrig(str);
                 textField.setText(ans);
             }catch(Exception exception){
-                textField.setText(exception.getMessage());
+                if(exception.getMessage()!=null)
+                    textField.setText(exception.getMessage());
+                else
+                    textField.setText("Error!");
             }
 
 
@@ -624,6 +627,7 @@ public class Calculator implements ActionListener {
                     index++;
                     if (str[index] == ')') stack.pop();
                     if (str[index] == '(') stack.push('(');
+
                 }
 
                 extracted = s.substring(start + 1, index);
