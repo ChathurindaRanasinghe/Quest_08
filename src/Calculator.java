@@ -9,7 +9,7 @@ public class Calculator implements ActionListener {
 
     final int fontSize = 20;
     final Font font = new Font("SFUIDisplay-Regular", Font.PLAIN, fontSize);
-    final Font font2 = new Font("SFUIDisplay-Regular", Font.PLAIN, 35);
+    final Font font2 = new Font("SFUIDisplay-Regular", Font.PLAIN, 20);
     final Color color = new Color(191, 245, 239);
     final Color color2 = new Color(142, 236, 216);
 
@@ -53,12 +53,12 @@ public class Calculator implements ActionListener {
         addComponents();
         addActionEvents();
     }
-    public void prepareGUI()
-    {
+
+    public void prepareGUI() {
         frame = new JFrame();
 
         frame.setTitle("Calculator");                           //Setting title of the JFrame
-        frame.setSize(380,675);                     //Setting size
+        frame.setSize(380, 675);                     //Setting size
         frame.getContentPane().setLayout(null);                 //Setting Layout
         frame.getContentPane().setBackground(color);      //Setting Background Color
         frame.setResizable(false);                              //Preventing window from resizing
@@ -67,12 +67,12 @@ public class Calculator implements ActionListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   //Setting default close operation
     }
 
-    public void addComponents(){
+    public void addComponents() {
 
         textField.setBounds(0, 0, 370, 160);
         textField.setFont(font2);
         textField.setBackground(color2);
-        textField.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
+        textField.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
         textField.setEditable(false);
         textField.setHorizontalAlignment(SwingConstants.LEFT);
         frame.add(textField);
@@ -240,10 +240,9 @@ public class Calculator implements ActionListener {
         frame.add(buttonEqual);
 
 
-
     }
 
-    public void addActionEvents(){
+    public void addActionEvents() {
 
         buttonZero.addActionListener(this);
         buttonOne.addActionListener(this);
@@ -261,7 +260,7 @@ public class Calculator implements ActionListener {
         buttonEqual.addActionListener(this);
         buttonMul.addActionListener(this);
         buttonDiv.addActionListener(this);
-        buttonPlus .addActionListener(this);
+        buttonPlus.addActionListener(this);
         buttonMinus.addActionListener(this);
         buttonMod.addActionListener(this);
         buttonOpenParenthesis.addActionListener(this);
@@ -299,8 +298,7 @@ public class Calculator implements ActionListener {
                 back.deleteCharAt(number);
                 textField.setText(back.toString());
 
-            }
-            else { //if (textField.getText().endsWith(""))
+            } else { //if (textField.getText().endsWith(""))
                 // label.setText("");
                 textField.setText("");
             }
@@ -364,37 +362,36 @@ public class Calculator implements ActionListener {
             //Setting functionality for equal(=) button
 
 
-
             String str = textField.getText();
 //            String ans = Double.toString(evaluate(str));
             textField.setText(extractTrig(str));
 
-        } else if(source == buttonSin){
+        } else if (source == buttonSin) {
             textField.setText(textField.getText() + "sin(");
-        } else if(source == buttonCos){
+        } else if (source == buttonCos) {
             textField.setText(textField.getText() + "cos(");
-        } else if(source == buttonTan){
+        } else if (source == buttonTan) {
             textField.setText(textField.getText() + "tan(");
-        } else if(source == buttonaSin){
+        } else if (source == buttonaSin) {
             textField.setText(textField.getText() + "asin(");
-        } else if(source == buttonaCos){
+        } else if (source == buttonaCos) {
             textField.setText(textField.getText() + "acos(");
-        } else if(source == buttonaTan){
+        } else if (source == buttonaTan) {
             textField.setText(textField.getText() + "atan(");
         }
 
 
     }
 
-    public static double precedence(char op){
-        if(op == '+'||op == '-')
+    public static double precedence(char op) {
+        if (op == '+' || op == '-')
             return 1;
-        if(op == '*'||op == '/'||op=='%')
+        if (op == '*' || op == '/' || op == '%')
             return 2;
         return 0;
     }
 
-    public static double applyOp(double a,double b, char op){
+    public static double applyOp(double a, double b, char op) {
         return switch (op) {
             case '+' -> a + b;
             case '-' -> a - b;
@@ -405,7 +402,29 @@ public class Calculator implements ActionListener {
         };
     }
 
-    public static double evaluate(String tokens){
+//    public char[] plusMinus(String tokens){
+//        tokens = tokens.replace("++","+");
+//        tokens = tokens.replace("+-","-");
+//        tokens = tokens.replace("-+","-");
+//        tokens = tokens.replace("--","+");
+//
+//        //char[] arr = tokens.toCharArray();
+//        StringBuilder str = new StringBuilder(tokens);
+//        if(tokens.charAt(0)=='+'){
+//            str.deleteCharAt(0);
+//        }else if(tokens.charAt(0)=='-'){
+//            int end = -1;
+//           for(int i=1;i<tokens.length();i++){
+//               if(!(Character.isDigit(tokens.charAt(i)) || tokens.charAt(i)=='.')){
+//                   end = i-1;
+//               }
+//           }
+//        }
+//
+//
+//    }
+
+    public static double evaluate(String tokens) {
         int i;
         char[] token = tokens.toCharArray();
         // stack to store integer values.
@@ -414,56 +433,42 @@ public class Calculator implements ActionListener {
         // stack to store operators.
         Stack<Character> ops = new Stack<>();
 
-        for(i = 0; i < tokens.length(); i++){
+        for (i = 0; i < tokens.length(); i++) {
 
             // Current token is a whitespace,
             // skip it.
-            if(token[i] == ' ') {
+            if (token[i] == ' ') {
                 continue;
             }
 
-                // Current token is an opening
-                // brace, push it to 'ops'
-            else if(token[i] == '('){
+            // Current token is an opening
+            // brace, push it to 'ops'
+            else if (token[i] == '(') {
                 ops.push(token[i]);
             }
 
             // Current token is a number, push
             // it to stack for numbers.
-            else if(Character.isDigit(token[i])){
-                String val="";
+            else if (Character.isDigit(token[i])) {
+                String val = "";
 
                 // There may be more than one
                 // digits in number.
-                while(i < tokens.length() &&
-                        (Character.isDigit(token[i]) || token[i]=='.' ))
-                {
-                    if(Character.isDigit(token[i]))
-                        val = val+String.valueOf((token[i]-'0')) ;
+                while (i < tokens.length() &&
+                        (Character.isDigit(token[i]) || token[i] == '.')) {
+                    if (Character.isDigit(token[i]))
+                        val = val + String.valueOf((token[i] - '0'));
                     else
-                        val = val+"." ;
+                        val = val + ".";
 
                     i++;
                 }
 
                 values.push(Double.parseDouble(val));
 
-                // right now the i points to
-                // the character next to the digit,
-                // since the for loop also increases
-                // the i, we would skip one
-                //  token position; we need to
-                // decrease the value of i by 1 to
-                // correct the offset.
-                 i--;
-            }
-
-            // Closing brace encountered, solve
-            // entire brace.
-            else if(token[i] == ')')
-            {
-                while(!ops.empty() && ops.peek() != '(')
-                {
+                i--;
+            } else if (token[i] == ')') {
+                while (!ops.empty() && ops.peek() != '(') {
                     double val2 = values.peek();
                     values.pop();
 
@@ -477,19 +482,14 @@ public class Calculator implements ActionListener {
                 }
 
                 // pop opening brace.
-                if(!ops.empty())
+                if (!ops.empty())
                     ops.pop();
             }
 
             // Current token is an operator.
-            else
-            {
-                // While top of 'ops' has same or greater
-                // precedence to current token, which
-                // is an operator. Apply operator on top
-                // of 'ops' to top two elements in values stack.
-                while(!ops.empty() && precedence(ops.peek())
-                        >= precedence(token[i])){
+            else {
+                while (!ops.empty() && precedence(ops.peek())
+                        >= precedence(token[i])) {
                     double val2 = values.peek();
                     values.pop();
 
@@ -507,10 +507,7 @@ public class Calculator implements ActionListener {
             }
         }
 
-        // Entire expression has been parsed at this
-        // point, apply remaining ops to remaining
-        // values.
-        while(!ops.empty()){
+        while (!ops.empty()) {
             double val2 = values.peek();
             values.pop();
 
@@ -523,52 +520,85 @@ public class Calculator implements ActionListener {
             values.push(applyOp(val1, val2, op));
         }
 
-        // Top of 'values' contains result, return it.
+
         return values.peek();
     }
 
-    public static String extractTrig(String s){
+    public static String extractTrig(String s) {
         char[] str = s.toCharArray();
         //Extract sin
         Stack<Character> stack = new Stack<>();
 
         int n = s.length();
         boolean flag = true;
+        String trigF = "";
         String extracted = "";
-        int index = -1,start = -1;
-        for(int i=0;i<n;i++){
-            if(str[i]=='n'){
-                index = i+1;
-                start = index;
-                stack.push(str[index]);
-                while(!stack.empty()){
-                    index++;
-                    if(str[index]==')') stack.pop();
-                    if(str[index]=='(') stack.push('(');
+        int index = -1, start = -1;
+        for (int i = 0; i < n; i++) {
+
+            if(str[i]=='a' && str[i+1] == 'n'){
+                trigF = "tan";
+                index = i + 2;
+                start = i + 2;
+                flag = false;
+            }else if(str[i] == 'a'){
+                if(str[i+1]=='s'){
+                    trigF = "asin";
+                }else if(str[i+1] == 'c'){
+                    trigF = "acos";
+                }else{
+                    trigF = "atan";
                 }
 
-                extracted = s.substring(start+1,index);
-                s = s.replace(extracted,"");
-
-                //System.out.println(s);
-                System.out.println(extracted);
+                index = i + 4;
+                start = i + 4;
                 flag = false;
+            } else if(str[i]=='i' && str[i+1] == 'n'){
+                trigF = "sin";
+                index = i + 2;
+                start = i + 2;
+                flag = false;
+            } else if(str[i]=='o' && str[i+1] == 's'){
+                trigF = "cos";
+                index = i + 2;
+                start = i + 2;
+                flag = false;
+            }
+
+
+            if(!flag){
+                stack.push(str[index]);
+                while (!stack.empty()) {
+                    index++;
+                    if (str[index] == ')') stack.pop();
+                    if (str[index] == '(') stack.push('(');
+                }
+
+                extracted = s.substring(start + 1, index);
+                s = s.replace(extracted, "");
                 break;
             }
         }//5+sin(0.5+0.01*sin(0.5))
 
-        if(flag){
+        if (flag) {
             return Double.toString(evaluate(s));
-        }else{
-            String nvalue = extractTrig(extracted);
-            System.out.println("nvalue = " + nvalue);
-            double v = Double.parseDouble(nvalue);
-            double value = Math.sin(v);
-            s = s.replace("sin()",Double.toString(value));
+        } else {
+            double v = Double.parseDouble(extractTrig(extracted));
+            double value = 0;
+            switch (trigF) {
+                case "sin" -> value = Math.sin(Math.toRadians(v));
+                case "cos" -> value = Math.cos(Math.toRadians(v));
+                case "tan" -> value = Math.tan(Math.toRadians(v));
+                case "atan" -> value = Math.atan(v);
+                case "acos" -> value = Math.acos(v);
+                case "asin" -> value = Math.asin(v);
+                default -> System.out.println("invalid Trig Function");
+            }
+
+            s = s.replace(trigF+"()", Double.toString(value));
         }
 
-
-        s=s.replace("+-","-");
+        s = s.replace("+-", "-");
         return extractTrig(s);
 
     }
