@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.util.Stack;
 
 
@@ -28,7 +29,7 @@ public class Calculator implements ActionListener {
     JButton buttonEight = new JButton("8");
     JButton buttonNine = new JButton("9");
     JButton buttonDot = new JButton(".");
-    JButton buttonClear = new JButton("C");
+    JButton buttonClear = new JButton("AC");
     JButton buttonDelete = new JButton("DEL");
     JButton buttonEqual = new JButton("=");
     JButton buttonMul = new JButton("x");
@@ -364,7 +365,13 @@ public class Calculator implements ActionListener {
 
             String str = textField.getText();
 //            String ans = Double.toString(evaluate(str));
-            textField.setText(extractTrig(str));
+            try{
+                String ans = extractTrig(str);
+                textField.setText(ans);
+            }catch(Exception exception){
+                textField.setText(exception.getMessage());
+            }
+
 
         } else if (source == buttonSin) {
             textField.setText(textField.getText() + "sin(");
@@ -415,13 +422,17 @@ public class Calculator implements ActionListener {
         }else if(tokens.charAt(0)=='-'){
 
             for(int i=1;i<tokens.length();i++){
-                if(!Character.isDigit(tokens.charAt(i))){
+                if(!Character.isDigit(tokens.charAt(i)) && tokens.charAt(i)!= 'c' && tokens.charAt(i)!= 'o' &&
+                        tokens.charAt(i)!= 's' && tokens.charAt(i)!= 'i' && tokens.charAt(i)!= 'n' && tokens.charAt(i)!= 'a' &&
+                        tokens.charAt(i)!= 't'
+                ){
                     if(tokens.charAt(i)!= '.'){
                         end = i;
+
                         break;
                     }
-
                 }
+                if(i==tokens.length()-1) end=tokens.length();
 
             }
             str.insert(end,')');
@@ -431,7 +442,7 @@ public class Calculator implements ActionListener {
         }
         //TODO: 6.- check
         boolean flag = true;
-        while(flag){
+        while(flag && str.length()>1){
             for(int i=1;i<str.length();i++){
                 if(str.charAt(i)=='-' && !Character.isDigit(str.charAt(i-1)) && str.charAt(i-1) != ')' ){
                     str.insert(i,'(');
@@ -635,8 +646,8 @@ public class Calculator implements ActionListener {
                 case "asin" -> value = Math.toDegrees(Math.asin(v));
                 default -> System.out.println("invalid Trig Function");
             }
-
-            s = s.replace(trigF+"()", Double.toString(value));
+            String vstr = new BigDecimal(value).toPlainString();
+            s = s.replace(trigF+"()", vstr);
         }
 
         s = s.replace("+-", "-");
