@@ -59,9 +59,9 @@ public class Calculator implements ActionListener {
         frame = new JFrame();
 
         frame.setTitle("Calculator");                           //Setting title of the JFrame
-        frame.setSize(380, 675);                     //Setting size
+        frame.setSize(380, 675);                    //Setting size
         frame.getContentPane().setLayout(null);                 //Setting Layout
-        frame.getContentPane().setBackground(color);      //Setting Background Color
+        frame.getContentPane().setBackground(color);            //Setting Background Color
         frame.setResizable(false);                              //Preventing window from resizing
         frame.setLocationRelativeTo(null);                      //Setting location to the center of the screen
         frame.setVisible(true);                                 //Setting window's visibility
@@ -240,7 +240,6 @@ public class Calculator implements ActionListener {
         buttonEqual.setBorderPainted(false);
         frame.add(buttonEqual);
 
-
     }
 
     public void addActionEvents() {
@@ -275,39 +274,26 @@ public class Calculator implements ActionListener {
 
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
-//        if (source == onRadioButton) {
-//            enable();//Calling enable() function
-//        } else if (source == offRadioButton) {
-//            disable();//Calling disable function
-//        }
         if (source == buttonClear) {
-            //Clearing texts of label and text field
             textField.setText("");
         } else if (source == buttonDelete) {
-            //Setting functionality for delete button(backspace)
             int length = textField.getText().length();
             int number = length - 1;
 
-
-            if (number > 0) {   //if (length > 0)
+            if (number > 0) {
                 StringBuilder back = new StringBuilder(textField.getText());
                 back.deleteCharAt(number);
                 textField.setText(back.toString());
 
-            } else { //if (textField.getText().endsWith(""))
-                // label.setText("");
+            } else {
                 textField.setText("");
             }
         } else if (source == buttonZero) {
-            if (textField.getText().equals("0")) {
-            } else {
-                textField.setText(textField.getText() + "0");
-            }
+            textField.setText(textField.getText() + "0");
         } else if (source == buttonOne) {
             textField.setText(textField.getText() + "1");
         } else if (source == buttonTwo) {
@@ -327,58 +313,31 @@ public class Calculator implements ActionListener {
         } else if (source == buttonNine) {
             textField.setText(textField.getText() + "9");
         } else if (source == buttonDot) {
-
             textField.setText(textField.getText() + ".");
-
         } else if (source == buttonPlus) {
-
             textField.setText(textField.getText() + "+");
-
-
         } else if (source == buttonMinus) {
-
             textField.setText(textField.getText() + "-");
-
         } else if (source == buttonMul) {
-
             textField.setText(textField.getText() + "*");
         } else if (source == buttonDiv) {
-
             textField.setText(textField.getText() + "/");
-
         } else if (source == buttonMod) {
-
             textField.setText(textField.getText() + "%");
-
-
         } else if (source == buttonOpenParenthesis) {
-
             textField.setText(textField.getText() + "(");
-
         } else if (source == buttonClosedParenthesis) {
-
             textField.setText(textField.getText() + ")");
-
         } else if (source == buttonEqual) {
-            //Setting functionality for equal(=) button
-
-
             String str = textField.getText();
-//            String ans = Double.toString(evaluate(str));
-            try{
-//                if(validate(str)){
-//                    String ans = extractTrig(str);
-//                    textField.setText(ans);
-//                }else{
-//                    throw new Exception("Syntax Error");
-//                }
+
+            try {
                 String ans = extractTrig(str);
                 textField.setText(ans);
 
-            }catch(Exception exception){
-                textField.setText("Error!");
+            } catch (Exception exception) {
+                textField.setText("Error");
             }
-
 
         } else if (source == buttonSin) {
             textField.setText(textField.getText() + "sin(");
@@ -393,7 +352,6 @@ public class Calculator implements ActionListener {
         } else if (source == buttonaTan) {
             textField.setText(textField.getText() + "atan(");
         }
-
 
     }
 
@@ -416,115 +374,93 @@ public class Calculator implements ActionListener {
         };
     }
 
-    public static char[] plusMinus(String tokens){
-        tokens = tokens.replace("++","+");
-        tokens = tokens.replace("+-","-");
-        tokens = tokens.replace("-+","-");
-        tokens = tokens.replace("--","+");
-        int end = -1;
-        //char[] arr = tokens.toCharArray();
-        StringBuilder str = new StringBuilder(tokens);
-        if(tokens.charAt(0)=='+'){
-            str.deleteCharAt(0);
-        }else if(tokens.charAt(0)=='-'){
+    public static char[] plusMinus(String tokens) {
+        tokens = tokens.replace("++", "+");
+        tokens = tokens.replace("+-", "-");
+        tokens = tokens.replace("-+", "-");
+        tokens = tokens.replace("--", "+");
 
-            for(int i=1;i<tokens.length();i++){
-                if(!Character.isDigit(tokens.charAt(i)) && tokens.charAt(i)!= 'c' && tokens.charAt(i)!= 'o' &&
-                        tokens.charAt(i)!= 's' && tokens.charAt(i)!= 'i' && tokens.charAt(i)!= 'n' && tokens.charAt(i)!= 'a' &&
-                        tokens.charAt(i)!= 't'
-                ){
-                    if(tokens.charAt(i)!= '.'){
+        int end = -1;
+
+        StringBuilder str = new StringBuilder(tokens);
+        if (tokens.charAt(0) == '+') {
+            str.deleteCharAt(0);
+        } else if (tokens.charAt(0) == '-') {
+
+            for (int i = 1; i < tokens.length(); i++) {
+                if (!Character.isDigit(tokens.charAt(i)) && tokens.charAt(i) != 'c' && tokens.charAt(i) != 'o' && tokens.charAt(i) != 's' && tokens.charAt(i) != 'i' && tokens.charAt(i) != 'n' && tokens.charAt(i) != 'a' && tokens.charAt(i) != 't'
+                ) {
+                    if (tokens.charAt(i) != '.') {
                         end = i;
 
                         break;
                     }
                 }
-                if(i==tokens.length()-1) end=tokens.length();
+                if (i == tokens.length() - 1) end = tokens.length();
 
             }
-            str.insert(end,')');
-            str.insert(0,'(');
-            str.insert(1,'0');
+            str.insert(end, ')');
+            str.insert(0, '(');
+            str.insert(1, '0');
 
         }
-        //TODO: 6.- check
+
         boolean flag = true;
-        while(flag && str.length()>1){
-            for(int i=1;i<str.length();i++){
-                if(str.charAt(i)=='-' && !Character.isDigit(str.charAt(i-1)) && str.charAt(i-1) != ')' ){
-                    str.insert(i,'(');
-                    str.insert(i+1,'0');
-                    //System.out.println(str);
-                    //System.out.println(str.charAt(i+3));
-                    for(int j=i+3;j<str.length();j++){
-                        if(!Character.isDigit(str.charAt(j)) || j == str.length()-1){
-                            if(str.charAt(j)!= '.'){
+        while (flag && str.length() > 1) {
+            for (int i = 1; i < str.length(); i++) {
+                if (str.charAt(i) == '-' && !Character.isDigit(str.charAt(i - 1)) && str.charAt(i - 1) != ')') {
+                    str.insert(i, '(');
+                    str.insert(i + 1, '0');
+
+                    for (int j = i + 3; j < str.length(); j++) {
+                        if (!Character.isDigit(str.charAt(j)) || j == str.length() - 1) {
+                            if (str.charAt(j) != '.') {
                                 end = j;
-                                if(j==str.length()-1) end++;
+                                if (j == str.length() - 1) end++;
                                 break;
                             }
                         }
 
                     }
-                    str.insert(end,')');
+                    str.insert(end, ')');
                     break;
                 }
-                if(i==str.length()-1){
+                if (i == str.length() - 1) {
                     flag = false;
                 }
             }
         }
 
-
         return str.toString().toCharArray();
-
-
     }
 
     public static double evaluate(String tokens) {
         int i;
 
         char[] token = plusMinus(tokens);
-        // stack to store integer values.
+
         Stack<Double> values = new Stack<>();
 
-        // stack to store operators.
         Stack<Character> ops = new Stack<>();
         ops.push('(');
 
         for (i = 0; i < token.length; i++) {
 
-            // Current token is a whitespace,
-            // skip it.
-            if (token[i] == ' ') {
-                continue;
-            }
-
-            // Current token is an opening
-            // brace, push it to 'ops'
-            else if (token[i] == '(') {
+            if (token[i] == '(') {
                 ops.push(token[i]);
-            }
+            } else if (Character.isDigit(token[i])) {
+                StringBuilder val = new StringBuilder();
 
-            // Current token is a number, push
-            // it to stack for numbers.
-            else if (Character.isDigit(token[i])) {
-                String val = "";
-
-                // There may be more than one
-                // digits in number.
-                while (i < token.length &&
-                        (Character.isDigit(token[i]) || token[i] == '.')) {
+                while (i < token.length && (Character.isDigit(token[i]) || token[i] == '.')) {
                     if (Character.isDigit(token[i]))
-                        val = val + String.valueOf((token[i] - '0'));
-                    else
-                        val = val + ".";
+                        val.append((token[i] - '0'));
+                    else {
+                        val.append(".");
+                    }
 
                     i++;
                 }
-
-                values.push(Double.parseDouble(val));
-
+                values.push(Double.parseDouble(val.toString()));
                 i--;
             } else if (token[i] == ')') {
                 while (!ops.empty() && ops.peek() != '(') {
@@ -540,15 +476,10 @@ public class Calculator implements ActionListener {
                     values.push(applyOp(val1, val2, op));
                 }
 
-                // pop opening brace.
                 if (!ops.empty())
                     ops.pop();
-            }
-
-            // Current token is an operator.
-            else {
-                while (!ops.empty() && precedence(ops.peek())
-                        >= precedence(token[i])) {
+            } else {
+                while (!ops.empty() && precedence(ops.peek()) >= precedence(token[i])) {
                     double val2 = values.peek();
                     values.pop();
 
@@ -561,12 +492,11 @@ public class Calculator implements ActionListener {
                     values.push(applyOp(val1, val2, op));
                 }
 
-                // Push current token to 'ops'.
                 ops.push(token[i]);
             }
         }
 
-        while (ops.size()>1) {
+        while (ops.size() > 1) {
             double val2 = values.peek();
             values.pop();
 
@@ -579,13 +509,12 @@ public class Calculator implements ActionListener {
             values.push(applyOp(val1, val2, op));
         }
 
-
         return values.peek();
     }
 
     public static String extractTrig(String s) {
         char[] str = s.toCharArray();
-        //Extract sin
+
         Stack<Character> stack = new Stack<>();
 
         int n = s.length();
@@ -595,37 +524,36 @@ public class Calculator implements ActionListener {
         int index = -1, start = -1;
         for (int i = 0; i < n; i++) {
 
-            if(str[i]=='a' && str[i+1] == 'n'){
+            if (str[i] == 'a' && str[i + 1] == 'n') {
                 trigF = "tan";
                 index = i + 2;
                 start = i + 2;
                 flag = false;
-            }else if(str[i] == 'a'){
-                if(str[i+1]=='s'){
+            } else if (str[i] == 'a') {
+                if (str[i + 1] == 's') {
                     trigF = "asin";
-                }else if(str[i+1] == 'c'){
+                } else if (str[i + 1] == 'c') {
                     trigF = "acos";
-                }else{
+                } else {
                     trigF = "atan";
                 }
 
                 index = i + 4;
                 start = i + 4;
                 flag = false;
-            } else if(str[i]=='i' && str[i+1] == 'n'){
+            } else if (str[i] == 'i' && str[i + 1] == 'n') {
                 trigF = "sin";
                 index = i + 2;
                 start = i + 2;
                 flag = false;
-            } else if(str[i]=='o' && str[i+1] == 's'){
+            } else if (str[i] == 'o' && str[i + 1] == 's') {
                 trigF = "cos";
                 index = i + 2;
                 start = i + 2;
                 flag = false;
             }
 
-
-            if(!flag){
+            if (!flag) {
                 stack.push(str[index]);
                 while (!stack.empty()) {
                     index++;
@@ -635,10 +563,10 @@ public class Calculator implements ActionListener {
                 }
 
                 extracted = s.substring(start + 1, index);
-                s = s.replace(extracted, "");
+                s = s.replace(trigF + "(" + extracted + ")", trigF + "()");
                 break;
             }
-        }//5+sin(0.5+0.01*sin(0.5))
+        }
 
         if (flag) {
             return Double.toString(evaluate(s));
@@ -655,58 +583,12 @@ public class Calculator implements ActionListener {
                 default -> System.out.println("invalid Trig Function");
             }
             String vstr = new BigDecimal(value).toPlainString();
-            s = s.replace(trigF+"()", vstr);
+            s = s.replace(trigF + "()", vstr);
         }
 
         s = s.replace("+-", "-");
         return extractTrig(s);
 
     }
-
-//    public boolean isOperator(char op){
-//        return op == '+' || op == '-' || op == '*' || op == '/' || op == '%';
-//    }
-//
-//
-//    public boolean  validate(String s){
-//
-//        char begChar=s.charAt(0);
-//        char endChar=s.charAt(s.length()-2);
-//        if(isOperator(begChar)&&(begChar!='+')&&(begChar!='-')){   //cannot have /,*,% at the beginning
-//
-//            return false;
-//        }
-//        if(isOperator(endChar)||endChar=='.'){   //cannot have /,* at the end
-//
-//            return false;
-//        }
-//
-//        for(int i=0;i<s.length();i++){
-//
-//            char temp=s.charAt(i);
-//
-//            if(i<=s.length()-2 ){
-//
-//                if(isOperator(temp)&&(temp!='+')&&(temp!='-')&&temp==s.charAt(i+1)){
-//                    return false;   //cannot have **,// or %%
-//                }
-//
-//                if(isOperator(temp)&&isOperator((s.charAt(i+1)))){
-//                    if(!((temp=='+' && s.charAt(i+1)=='-' )||(temp=='-'&& s.charAt(i+1)=='+') )) //can only have +- and -+.cant have /*,*/,%* etc
-//                        return false;
-//                }
-//
-//            }
-//            if(i<=s.length()-3 ){
-//
-//                if(isOperator(temp)&&temp==s.charAt(i+1)&&temp==s.charAt(i+2)){
-//                    return false;   //cannot have +++,---,***,/// or %%%
-//                }
-//
-//            }
-//        }
-//
-//        return true;
-//    }
 
 }
